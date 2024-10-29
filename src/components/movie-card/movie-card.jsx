@@ -1,19 +1,29 @@
 import React from 'react';
-import PropTypes from 'prop-types'; // Import PropTypes
+import PropTypes from 'prop-types';
+import { Button, Card } from "react-bootstrap";
 
-export const MovieCard = ({ movie, onClick }) => {
+export const MovieCard = ({ movie, onMovieClick }) => {
     return (
-        <div onClick={onClick} style={{ cursor: 'pointer' }}>  {/* Ensure it's clickable */}
-            <h2>{movie.title}</h2>
-        </div>
+        <Card>
+            <Card.Img variant="top" src={movie.image_url} /> {/* Update image field to match your data */}
+            <Card.Body>
+                <Card.Title>{movie.title}</Card.Title>
+                <Card.Text>{movie.director?.name}</Card.Text> {/* Access 'name' within 'director' */}
+                <Button onClick={() => onMovieClick(movie)} variant="link">
+                    Open
+                </Button>
+            </Card.Body>
+        </Card>
     );
 };
 
-// Add PropTypes validation for the props
 MovieCard.propTypes = {
     movie: PropTypes.shape({
-        title: PropTypes.string.isRequired,  // Validate that 'title' is a string and is required
-        director: PropTypes.string.isRequired,
-    }).isRequired, // The 'movie' prop is required
-    onClick: PropTypes.func.isRequired,  // The 'onClick' prop is required and should be a function
+        title: PropTypes.string.isRequired,
+        director: PropTypes.shape({
+            name: PropTypes.string.isRequired
+        }).isRequired,
+        image_url: PropTypes.string.isRequired
+    }).isRequired,
+    onMovieClick: PropTypes.func.isRequired, // Ensure this prop is required
 };

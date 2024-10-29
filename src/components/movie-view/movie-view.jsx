@@ -1,17 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types'; // Import PropTypes
-
 export const MovieView = ({ movie, onBackClick }) => {
     return (
         <div>
-            <button onClick={onBackClick}>Back</button> {/* This button navigates back */}
-            <div>
-                <img src={movie.imagePath} alt={`${movie.title} Poster`} />
-                <h1>{movie.title}</h1>
-                <p>{movie.description}</p>
-                <p>Genre: {movie.genre}</p>
-                <p>Director: {movie.director}</p>
-            </div>
+            <button
+                onClick={onBackClick}
+                className="back-button"
+                style={{ cursor: "pointer" }}
+            >
+                Back
+            </button> {/* This button navigates back */}
+
+            <img src={movie.image_url} alt={`${movie.title} Poster`} />
+            <h1>{movie.title}</h1>
+            <p>{movie.description}</p>
+            <p>Genre: {movie.genre?.name}</p>
+            <p>Director: {movie.director?.name}</p>
+
         </div>
     );
 };
