@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { MainView } from './components/main-view/main-view';
 import { LoginView } from "./components/login-view/login-view";
 import { SignupView } from "./components/signup-view/signup-view";
@@ -20,19 +20,15 @@ const MyFlixApplication = () => {
                     ) : (
                         <LoginView onLoggedIn={(user) => setUser(user)} />
                     )}
-                    <p>
-                        {showSignup ? (
-                            <span>Already have an account? <button onClick={() => setShowSignup(false)}>Log In</button></span>
-                        ) : (
-                            <span>Don't have an account? <button onClick={() => setShowSignup(true)}>Sign Up</button></span>
-                        )}
-                    </p>
                 </>
             ) : (
-                <MainView />
+                <MainView user={user} />
             )}
         </Container>
     );
 };
 
-ReactDOM.render(<MyFlixApplication />, document.getElementById('root'));
+// Create root for React 18 compatibility
+const container = document.getElementById('root');
+const root = createRoot(container);
+root.render(<MyFlixApplication />);

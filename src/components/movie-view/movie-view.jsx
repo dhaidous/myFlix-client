@@ -1,9 +1,19 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useParams, Link } from "react-router-dom";
 
-export const MovieView = ({ movie }) => {
+export const MovieView = ({ movies }) => {
     const { id } = useParams();  // Get movie ID from URL parameters
+    const [movie, setMovie] = useState(null);
+
+    useEffect(() => {
+        if (movies && Array.isArray(movies)) {
+            const selectedMovie = movies.find(m => m._id === id);
+            setMovie(selectedMovie);
+        }
+    }, [id, movies]);
+
+    if (!movie) return <p>Loading...</p>;
 
     return (
         <div>
@@ -18,15 +28,18 @@ export const MovieView = ({ movie }) => {
 };
 
 MovieView.propTypes = {
-    movie: PropTypes.shape({
-        image_url: PropTypes.string.isRequired,
-        title: PropTypes.string.isRequired,
-        description: PropTypes.string.isRequired,
-        genre: PropTypes.shape({
-            name: PropTypes.string.isRequired,
-        }).isRequired,
-        director: PropTypes.shape({
-            name: PropTypes.string.isRequired,
-        }).isRequired
-    }).isRequired
+    movies: PropTypes.arrayOf(
+        PropTypes.shape({
+            _id: PropTypes.string.isRequired,
+            image_url: PropTypes.string,
+            title: PropTypes.string,
+            description: PropTypes.string,
+            genre: PropTypes.shape({
+                name: PropTypes.string,
+            }),
+            director: PropTypes.shape({
+                name: PropTypes.string,
+            }),
+        })
+    ),
 };

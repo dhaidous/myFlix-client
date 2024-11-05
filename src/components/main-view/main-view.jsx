@@ -27,21 +27,19 @@ export const MainView = () => {
                         path="/movies"
                         element={
                             <Row>
-                                {movies.map((movie) => (
-                                    <Col className="mb-5" key={movie.id} md={3}>
-                                        <MovieCard movie={movie} />
-                                    </Col>
+                                {movies && movies.map((movie) => (
+                                    movie._id ? (
+                                        <Col key={movie._id} md={3}>
+                                            <MovieCard movie={movie} />
+                                        </Col>
+                                    ) : null
                                 ))}
                             </Row>
                         }
                     />
-                    {/* Individual movie view */}
-                    <Route
-                        path="/movies/:id"
-                        element={<MovieView movie={movies.find(m => m.id === window.location.pathname.split("/")[2])} />}
-                    />
-                    {/* Default route redirects to /movies */}
-                    <Route path="*" element={<Navigate to="/movies" />} />
+                    {/* Movie detail route */}
+                    <Route path="/movies/:id" element={<MovieView movies={movies} />} />
+                    <Route path="/" element={<Navigate to="/movies" />} />
                 </Routes>
             </div>
         </Router>

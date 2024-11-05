@@ -10,7 +10,7 @@ export const MovieCard = ({ movie }) => {
             <Card.Body>
                 <Card.Title>{movie.title}</Card.Title>
                 <Card.Text>{movie.director?.name}</Card.Text>
-                <Link to={`/movies/${movie.id}`} className="btn btn-link">
+                <Link to={`/movies/${movie._id}`} className="btn btn-link">
                     Open
                 </Link>
             </Card.Body>
@@ -20,7 +20,7 @@ export const MovieCard = ({ movie }) => {
 
 MovieCard.propTypes = {
     movie: PropTypes.shape({
-        id: PropTypes.string.isRequired, // Ensure 'id' exists for routing
+        _id: PropTypes.string.isRequired, // Use `_id` as it matches the database field
         title: PropTypes.string.isRequired,
         director: PropTypes.shape({
             name: PropTypes.string.isRequired
