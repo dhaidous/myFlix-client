@@ -2,32 +2,54 @@ import React, { useState, useEffect } from 'react';
 import { NavigationBar } from '../navigation-bar/navigation-bar';
 import { MovieCard } from '../movie-card/movie-card';
 import { MovieView } from '../movie-view/movie-view';
+import { ProfileView } from '../profile-view/profile-view';
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Row from "react-bootstrap/Row";
 import Col from 'react-bootstrap/Col';
 
-export const MainView = () => {
+export const MainView = ({ user }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem("token"));
     const [movies, setMovies] = useState([]);
+    const token = localStorage.getItem("token");
 
+    // Logout function to clear storage and update authentication state
     const handleLogout = () => {
-        localStorage.removeItem("token");
+        localStorage.clear();
         setIsAuthenticated(false);
     };
 
+    // Fetch movies when token changes (i.e., when user logs in)
     useEffect(() => {
-        fetch('https://get-all-movies-70de933db6be.herokuapp.com/movies')
-            .then((response) => response.json())
-            .then((data) => setMovies(data))
-            .catch((error) => console.error('Error fetching movies:', error));
-    }, []);
+        if (token) {
+            fetch('https://get-all-movies-70de933db6be.herokuapp.com/movies', {
+                headers: { Authorization: `Bearer ${token}` }
+            })
+                .then(response => response.json())
+                .then(data => setMovies(data))
+                .catch(error => console.error('Error fetching movies:', error));
+        }
+    }, [token]);
 
     return (
         <Router>
-            <NavigationBar isAuthenticated={isAuthenticated} onLogout={handleLogout} />
+            <NavigationBar user={user} isAuthenticated={isAuthenticated} onLogout={handleLogout} />
             <div className="container">
-                <h1>My Movies</h1>
                 <Routes>
+                    {/* Profile Route */}
+                    <Route
+                        path="/profile"
+                        element={
+                            user ? (
+                                <ProfileView
+                                    user={user}
+                                    movies={movies}
+                                />
+                            ) : (
+                                <Navigate to="/" />
+                            )
+                        }
+                    />
+                    {/* Main Movie List Route */}
                     <Route
                         path="/movies"
                         element={
@@ -40,7 +62,7 @@ export const MainView = () => {
                             </Row>
                         }
                     />
-                    {/* Route to handle individual movie view */}
+                    {/* Individual Movie View */}
                     <Route path="/movies/:id" element={<MovieView movies={movies} />} />
                     <Route path="*" element={<Navigate to="/movies" />} />
                 </Routes>

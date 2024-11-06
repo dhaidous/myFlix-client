@@ -1,16 +1,16 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { Navbar, Nav } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-export const NavigationBar = ({ isAuthenticated, onLogout }) => {
+export const NavigationBar = ({ user, onLogout }) => {
     return (
-        <Navbar bg="dark" variant="dark" expand="lg">
-            <Navbar.Brand as={Link} to="/">myFlix</Navbar.Brand>
+        <Navbar bg="light" expand="lg">
+            <Navbar.Brand as={Link} to="/">MyFlixApp</Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
-                <Nav className="ml-auto">
-                    {isAuthenticated ? (
+                <Nav className="me-auto">
+                    {user ? (
                         <>
                             <Nav.Link as={Link} to="/movies">Home</Nav.Link>
                             <Nav.Link as={Link} to="/profile">Profile</Nav.Link>
@@ -29,6 +29,8 @@ export const NavigationBar = ({ isAuthenticated, onLogout }) => {
 };
 
 NavigationBar.propTypes = {
-    isAuthenticated: PropTypes.bool.isRequired,
+    user: PropTypes.shape({
+        Username: PropTypes.string
+    }),
     onLogout: PropTypes.func.isRequired
 };
