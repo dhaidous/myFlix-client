@@ -1,3 +1,4 @@
+// login-view.jsx
 import React, { useState } from "react";
 
 export const LoginView = ({ onLoggedIn }) => {
@@ -12,7 +13,7 @@ export const LoginView = ({ onLoggedIn }) => {
             Password: password,
         };
 
-        fetch('https://get-all-movies-70de933db6be.herokuapp.com/login', {  // Change to /login
+        fetch('https://get-all-movies-70de933db6be.herokuapp.com/login', {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -21,8 +22,8 @@ export const LoginView = ({ onLoggedIn }) => {
         })
             .then((response) => response.json())
             .then((data) => {
-                if (data.user) {
-                    onLoggedIn(data.user, data.token);
+                if (data.token) {
+                    onLoggedIn(data.token); // Pass the token back to MainView
                 } else {
                     alert("Login failed");
                 }
