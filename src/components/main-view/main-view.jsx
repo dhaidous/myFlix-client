@@ -1,34 +1,24 @@
 import React, { useState, useEffect } from 'react';
+import { NavigationBar } from '../navigation-bar/navigation-bar';
 import { MovieCard } from '../movie-card/movie-card';
 import { MovieView } from '../movie-view/movie-view';
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Row from "react-bootstrap/Row";
 import Col from 'react-bootstrap/Col';
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import { NavigationBar } from "../navigation-bar/navigation-bar";
-import { LoginView } from "../login-view/login-view";
 
 export const MainView = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem("token"));
     const [movies, setMovies] = useState([]);
 
-    const handleLogin = (token) => {
-        localStorage.setItem("token", token);
-        setIsAuthenticated(true);
-    };
-
-
     const handleLogout = () => {
         localStorage.removeItem("token");
-        localStorage.removeItem("user");
         setIsAuthenticated(false);
     };
 
     useEffect(() => {
         fetch('https://get-all-movies-70de933db6be.herokuapp.com/movies')
             .then((response) => response.json())
-            .then((data) => {
-                setMovies(data);
-            })
+            .then((data) => setMovies(data))
             .catch((error) => console.error('Error fetching movies:', error));
     }, []);
 
@@ -38,10 +28,6 @@ export const MainView = () => {
             <div className="container">
                 <h1>My Movies</h1>
                 <Routes>
-                    <Route
-                        path="/login"
-                        element={<LoginView onLoggedIn={handleLogin} />}
-                    />
                     <Route
                         path="/movies"
                         element={
@@ -54,7 +40,8 @@ export const MainView = () => {
                             </Row>
                         }
                     />
-                    <Route path="/movies/:id" element={<MovieView />} />
+                    {/* Route to handle individual movie view */}
+                    <Route path="/movies/:id" element={<MovieView movies={movies} />} />
                     <Route path="*" element={<Navigate to="/movies" />} />
                 </Routes>
             </div>
