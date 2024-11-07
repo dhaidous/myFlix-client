@@ -1,36 +1,40 @@
 import React from 'react';
-import { Navbar, Nav } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-export const NavigationBar = ({ user, onLogout }) => {
-    return (
-        <Navbar bg="light" expand="lg">
-            <Navbar.Brand as={Link} to="/">MyFlixApp</Navbar.Brand>
-            <Navbar.Toggle aria-controls="basic-navbar-nav" />
-            <Navbar.Collapse id="basic-navbar-nav">
-                <Nav className="me-auto">
-                    {user ? (
-                        <>
-                            <Nav.Link as={Link} to="/movies">Home</Nav.Link>
-                            <Nav.Link as={Link} to="/profile">Profile</Nav.Link>
-                            <Nav.Link onClick={onLogout}>Logout</Nav.Link>
-                        </>
-                    ) : (
-                        <>
-                            <Nav.Link as={Link} to="/login">Login</Nav.Link>
-                            <Nav.Link as={Link} to="/signup">Signup</Nav.Link>
-                        </>
-                    )}
-                </Nav>
-            </Navbar.Collapse>
-        </Navbar>
-    );
-};
+export const NavigationBar = ({ isAuthenticated, onLogout }) => (
+    <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <Link to="/" className="navbar-brand">myFlix</Link>
+        <div className="collapse navbar-collapse">
+            <ul className="navbar-nav ml-auto">
+                {isAuthenticated ? (
+                    <>
+                        <li className="nav-item">
+                            <Link to="/movies" className="nav-link">Home</Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link to="/profile" className="nav-link">Profile</Link>
+                        </li>
+                        <li className="nav-item">
+                            <button onClick={onLogout} className="nav-link btn btn-link">Logout</button>
+                        </li>
+                    </>
+                ) : (
+                    <>
+                        <li className="nav-item">
+                            <Link to="/" className="nav-link">Login</Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link to="/signup" className="nav-link">Sign Up</Link>
+                        </li>
+                    </>
+                )}
+            </ul>
+        </div>
+    </nav>
+);
 
 NavigationBar.propTypes = {
-    user: PropTypes.shape({
-        Username: PropTypes.string
-    }),
-    onLogout: PropTypes.func.isRequired
+    isAuthenticated: PropTypes.bool.isRequired,
+    onLogout: PropTypes.func.isRequired,
 };
