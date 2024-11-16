@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
 export const LoginView = ({ onLoggedIn }) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const navigate = useNavigate();
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -37,16 +39,21 @@ export const LoginView = ({ onLoggedIn }) => {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <label>
-                Username:
-                <input type="text" value={username} onChange={e => setUsername(e.target.value)} required />
-            </label>
-            <label>
-                Password:
-                <input type="password" value={password} onChange={e => setPassword(e.target.value)} required />
-            </label>
-            <button type="submit">Login</button>
-        </form>
+        <div>
+            <form onSubmit={handleSubmit}>
+                <label>
+                    Username:
+                    <input type="text" value={username} onChange={e => setUsername(e.target.value)} required />
+                </label>
+                <label>
+                    Password:
+                    <input type="password" value={password} onChange={e => setPassword(e.target.value)} required />
+                </label>
+                <button type="submit">Login</button>
+            </form>
+            <button onClick={() => navigate('/signup')} style={{ marginTop: '10px' }}>
+                Sign Up
+            </button>
+        </div>
     );
 };
