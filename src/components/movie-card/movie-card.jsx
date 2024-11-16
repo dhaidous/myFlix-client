@@ -1,17 +1,32 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Card } from "react-bootstrap";
+import { Card } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
-export const MovieCard = ({ movie, onMovieClick }) => {
+export const MovieCard = ({ movie, userFavorites = [], toggleFavorite }) => {
+    // Determine if this movie is a favorite
+    const isFavorite = userFavorites.includes(movie._id);
+
     return (
         <Card>
-            <Card.Img variant="top" src={movie.image_url} /> {/* Update image field to match your data */}
+            <Card.Img variant="top" src={movie.image_url} />
             <Card.Body>
                 <Card.Title>{movie.title}</Card.Title>
-                <Card.Text>{movie.director?.name}</Card.Text> {/* Access 'name' within 'director' */}
-                <Button onClick={() => onMovieClick(movie)} variant="link">
+                <Card.Text>{movie.director?.name}</Card.Text>
+
+                {/* Favorites button */}
+                <span
+                    onClick={() => toggleFavorite(movie._id)}
+                    style={{ color: isFavorite ? 'yellow' : 'grey', cursor: 'pointer', fontSize: '1.5rem' }}
+                    title={isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
+                >
+                    ★
+                </span>
+
+                {/* Link to the movie's detail view */}
+                <Link to={`/movies/${movie._id}`} className="btn btn-primary" style={{ marginLeft: '10px' }}>
                     Open
-                </Button>
+                </Link>
             </Card.Body>
         </Card>
     );
@@ -23,7 +38,9 @@ MovieCard.propTypes = {
         director: PropTypes.shape({
             name: PropTypes.string.isRequired
         }).isRequired,
-        image_url: PropTypes.string.isRequired
+        image_url: PropTypes.string.isRequired,
+        _id: PropTypes.string.isRequired
     }).isRequired,
-    onMovieClick: PropTypes.func.isRequired, // Ensure this prop is required
+    userFavorites: PropTypes.arrayOf(PropTypes.string), // Not required, with default fallback
+    toggleFavorite: PropTypes.func.isRequired
 };
