@@ -29,8 +29,7 @@
   },
   "devDependencies": {
     "@parcel/transformer-sass": "^2.12.0",
-    "parcel": "^2.12.0",
-    "process": "^2.12.0"
+    "parcel": "^2.12.0"
   },
   "browserslist": {
     "production": [
