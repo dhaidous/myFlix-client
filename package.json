@@ -28,8 +28,8 @@
     "sass": "^1.80.6"
   },
   "devDependencies": {
-    "@parcel/transformer-sass": "^2.13.3",
-    "parcel": "^2.13.3"
+    "@parcel/transformer-sass": "^2.9.3",
+    "parcel": "^2.9.3"
   },
   "browserslist": {
     "production": [
